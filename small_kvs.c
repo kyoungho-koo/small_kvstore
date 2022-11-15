@@ -1,23 +1,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#define KEY_SIZE 4
-#define VALUE_SIZE 10
-#define CMD_LEN 10000
-#define DEL_STR "DEL_STR_1"
-typedef struct {
-	char key [KEY_SIZE];
-	char value [VALUE_SIZE];
-} kv_tuple;
+#include "small_kvs.h"
 
 
-void printCMDline (char **cmd_argv, int *cmd_argc);
-int put_kv (const char * key, const char * value);
-int get_kv (const char * key, char * value);
-void get_all ();
 
-void load_kv(int number);
+
+static void printCMDline (char **cmd_argv, int *cmd_argc);
+
 
 int main () {
 
@@ -32,25 +22,29 @@ int main () {
 			char value[VALUE_SIZE];
 			get_kv(cmd_argv[1], value);
 
-      if (value == NULL || !strcmp(value, DEL_STR)) {
-			  printf("key: %s NOTFOUND\n", cmd_argv[1]);
-      } else {
-			  printf("key: %s value: %s\n", cmd_argv[1], value);
-      }
+			if (value == NULL || !strcmp(value, DEL_STR)) {
+				  printf("key: %s NOTFOUND\n", cmd_argv[1]);
+			} else {
+				  printf("key: %s value: %s\n", cmd_argv[1], value);
+			}
 		} else if (!strcmp(cmd_argv[0], "del") || !strcmp(cmd_argv[0], "d")) {
 			char value[VALUE_SIZE];
-	    get_kv(cmd_argv[1], value);
-      if (value != NULL) {
-        put_kv(cmd_argv[1], DEL_STR);
-      }
-    } else if (!strcmp(cmd_argv[0], "all") || !strcmp(cmd_argv[0], "a")) {
+			get_kv(cmd_argv[1], value);
+
+			if (value != NULL) {
+				put_kv(cmd_argv[1], DEL_STR);
+			}
+		} else if (!strcmp(cmd_argv[0], "all") || !strcmp(cmd_argv[0], "a")) {
 			get_all ();
 		} else if (!strcmp(cmd_argv[0], "help") || !strcmp(cmd_argv[0], "h")) {
 			printf( "[command]	[argv1]		[argv2]\n"
 					"put		key		value\n"
-					" put key-value record\n"
+					"	- put key-value record\n"
+					"\n"
 					"get		key\n"
-          "del    key\n"
+					"	- get value from key"
+					"\n"
+					"del    key\n"
 					"all\n"
 					"quit\n");
 		} else if (!strcmp(cmd_argv[0], "load")) {

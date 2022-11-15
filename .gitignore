@@ -1,3 +1,5 @@
 *.swp
 small_kvs
 tags
+*.files
+*.out
