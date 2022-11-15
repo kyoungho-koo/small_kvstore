@@ -3,3 +3,4 @@ small_kvs
 tags
 *.files
 *.out
+./obj/

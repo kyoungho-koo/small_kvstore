@@ -2,12 +2,53 @@
 #include <stdlib.h>
 #include <string.h>
 #include "small_kvs.h"
+#include "small_kvs_interface.h"
 
 
 
+void load_kv(int number) {
 
-static void printCMDline (char **cmd_argv, int *cmd_argc);
+	srand(time(NULL));
+	for (int i = 0; i < number; i++) {
+		char key[KEY_SIZE];
+		char value[VALUE_SIZE];
 
+		memset (key, 0, KEY_SIZE);
+		memset (value, 0, VALUE_SIZE);
+
+		for (int j = 0; j < KEY_SIZE - 1; j++) {
+			key[j] = rand() % 26 + 'A';
+		}
+		
+		for (int j = 0; j < VALUE_SIZE - 1; j++) {
+			value[j] = rand() % 26 + 'a';
+		}
+
+		put_kv(key, value);
+
+	}
+}
+
+char cmd[CMD_LEN];
+static void printCMDline (char **cmd_argv, int *cmd_argc) {
+	printf("small_kvs> ");
+	scanf("%[^\n]s",cmd);
+	// remove new line
+	getchar();
+
+	//printf("%s\n", cmd);
+	
+	*cmd_argc = 0;
+	cmd_argv[*cmd_argc] = strtok(cmd, " ");
+
+	while (cmd_argv[*cmd_argc] !=  NULL) {
+		cmd_argv[++*cmd_argc] = strtok(NULL, " ");
+		if (*cmd_argc == 5) {
+			printf("cmd argument limit (<5)\n");
+			break;
+		}
+	}
+}
 
 int main () {
 
@@ -56,106 +97,4 @@ int main () {
 
 	}
 
-}
-
-char cmd[CMD_LEN];
-void printCMDline (char **cmd_argv, int *cmd_argc) {
-	printf("small_kvs> ");
-	scanf("%[^\n]s",cmd);
-	// remove new line
-	getchar();
-
-	//printf("%s\n", cmd);
-	
-	*cmd_argc = 0;
-	cmd_argv[*cmd_argc] = strtok(cmd, " ");
-
-	while (cmd_argv[*cmd_argc] !=  NULL) {
-		cmd_argv[++*cmd_argc] = strtok(NULL, " ");
-		if (*cmd_argc == 5) {
-			printf("cmd argument limit (<5)\n");
-			break;
-		}
-	}
-}
-
-int put_kv (const char * key, const char * value) {
-	FILE *fp;
-	
-	fp = fopen("/tmp/small_kvs.txt","a+");
-	fprintf(fp, "%s %s\n", key, value);
-	fclose(fp);
-	//fp = fopen("/tmp/test.txt","r");
-}
-
-int get_kv (const char * key, char * value) {
-	FILE *fp;
-	char key_buf [KEY_SIZE];
-	char value_buf [VALUE_SIZE];
-	
-	fp = fopen("/tmp/small_kvs.txt","r");
-	while (fscanf(fp, "%s %s", key_buf, value_buf) != EOF) {
-		if (!strcmp(key,key_buf)) {
-			strcpy(value, value_buf);
-		}
-	}
-	fclose(fp);
-}
-
-void get_all () {
-	FILE *fp;
-	char key_buf [KEY_SIZE];
-	char value_buf [VALUE_SIZE];
-
-	kv_tuple kvs[1024];
-	int kvs_size = 0;
-	
-	fp = fopen("/tmp/small_kvs.txt","r");
-	if (!fp) {
-		return;
-	}
-
-	while (fscanf(fp, "%s %s", key_buf, value_buf) != EOF) {
-		int new = 1;
-		for (int i = 0; i < kvs_size; i++) {
-			if (!strcmp(kvs[i].key, key_buf)) {
-				new = 0;
-				strcpy(kvs[i].value, value_buf);
-			}
-		}
-		if (new) {
-			strcpy(kvs[kvs_size].key, key_buf);
-			strcpy(kvs[kvs_size].value, value_buf);
-			kvs_size ++;
-		}
-	}
-
-	for (int i = 0; i < kvs_size; i++) {
-		printf("key: %s value: %s\n", kvs[i].key, kvs[i].value);
-	}
-	
-	fclose(fp);
-}
-
-void load_kv(int number) {
-
-	srand(time(NULL));
-	for (int i = 0; i < number; i++) {
-		char key[KEY_SIZE];
-		char value[VALUE_SIZE];
-
-		memset (key, 0, KEY_SIZE);
-		memset (value, 0, VALUE_SIZE);
-
-		for (int j = 0; j < KEY_SIZE - 1; j++) {
-			key[j] = rand() % 26 + 'A';
-		}
-		
-		for (int j = 0; j < VALUE_SIZE - 1; j++) {
-			value[j] = rand() % 26 + 'a';
-		}
-
-		put_kv(key, value);
-
-	}
 }
