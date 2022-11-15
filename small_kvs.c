@@ -5,7 +5,7 @@
 #define KEY_SIZE 4
 #define VALUE_SIZE 10
 #define CMD_LEN 10000
-
+#define DEL_STR "DEL_STR_1"
 typedef struct {
 	char key [KEY_SIZE];
 	char value [VALUE_SIZE];
@@ -31,14 +31,26 @@ int main () {
 		} else if (!strcmp(cmd_argv[0], "get") || !strcmp(cmd_argv[0], "g")) {
 			char value[VALUE_SIZE];
 			get_kv(cmd_argv[1], value);
-			printf("key: %s value: %s\n", cmd_argv[1], value);
-		} else if (!strcmp(cmd_argv[0], "all") || !strcmp(cmd_argv[0], "a")) {
+
+      if (value == NULL || !strcmp(value, DEL_STR)) {
+			  printf("key: %s NOTFOUND\n", cmd_argv[1]);
+      } else {
+			  printf("key: %s value: %s\n", cmd_argv[1], value);
+      }
+		} else if (!strcmp(cmd_argv[0], "del") || !strcmp(cmd_argv[0], "d")) {
+			char value[VALUE_SIZE];
+	    get_kv(cmd_argv[1], value);
+      if (value != NULL) {
+        put_kv(cmd_argv[1], DEL_STR);
+      }
+    } else if (!strcmp(cmd_argv[0], "all") || !strcmp(cmd_argv[0], "a")) {
 			get_all ();
 		} else if (!strcmp(cmd_argv[0], "help") || !strcmp(cmd_argv[0], "h")) {
 			printf( "[command]	[argv1]		[argv2]\n"
 					"put		key		value\n"
 					" put key-value record\n"
 					"get		key\n"
+          "del    key\n"
 					"all\n"
 					"quit\n");
 		} else if (!strcmp(cmd_argv[0], "load")) {

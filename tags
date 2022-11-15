@@ -1,0 +1,19 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+CMD_LEN	small_kvs.c	7;"	d	file:
+KEY_SIZE	small_kvs.c	5;"	d	file:
+VALUE_SIZE	small_kvs.c	6;"	d	file:
+cmd	small_kvs.c	/^char cmd[CMD_LEN];$/;"	v
+get_all	small_kvs.c	/^void get_all () {$/;"	f
+get_kv	small_kvs.c	/^int get_kv (const char * key, char * value) {$/;"	f
+key	small_kvs.c	/^	char key [KEY_SIZE];$/;"	m	struct:__anon1	file:
+kv_tuple	small_kvs.c	/^} kv_tuple;$/;"	t	typeref:struct:__anon1	file:
+load_kv	small_kvs.c	/^void load_kv(int number) {$/;"	f
+main	small_kvs.c	/^int main () {$/;"	f
+printCMDline	small_kvs.c	/^void printCMDline (char **cmd_argv, int *cmd_argc) {$/;"	f
+put_kv	small_kvs.c	/^int put_kv (const char * key, const char * value) {$/;"	f
+value	small_kvs.c	/^	char value [VALUE_SIZE];$/;"	m	struct:__anon1	file:
