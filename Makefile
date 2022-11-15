@@ -3,7 +3,7 @@ OBJDIR=./obj/
 
 CC=gcc
 LDFLAGS= -lm
-CFLAGS=-Wall -Wimplicit-function-declaration
+CFLAGS=-Wall -Wimplicit-function-declaration -Wreturn-type
 
 OBJ=small_kvs.o small_kvs_interface.o
 
@@ -20,14 +20,15 @@ $(OBJDIR)%.o: %.c
 obj: 
 	mkdir -p obj
 
-
 clean:
 	rm -rf $(OBJS) $(EXEC) $(OBJDIR)/*
 	rm -rf tags
 	rm -rf *.files
 	rm -rf *.out
+
 tags:
 	ctags -R
+
 cscope:
 	find . \( -name '*.c' -o -name '*.h' \) -print > cscope.files
 	cscope -i cscope.files
